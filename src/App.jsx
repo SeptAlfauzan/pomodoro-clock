@@ -7,6 +7,7 @@ import { useAudio } from "./features/audio/hooks/useAudio";
 import Circle from "./features/timer/components/circle";
 import TimerDisplay from "./features/timer/components/timerDisplay";
 import TimerSetting from "./features/timer/components/timerSetting";
+import MusicSouce from "./assets/music/windows_7_startup.mp3";
 
 const App = () => {
   const [timerOn, setTimerOn] = useState(false);
@@ -14,6 +15,7 @@ const App = () => {
   const [timer, setTimer] = useState(1500);
   const [breakTime, setBreakTime] = useState(5);
   const [sessionTime, setSessionTime] = useState(25);
+  const [percentage, setPercentage] = useState(100);
   const interval = React.useRef(null);
   const audio = React.useRef(null);
   // custom hooks
@@ -89,6 +91,11 @@ const App = () => {
           breakStatus
         );
 
+        const currPercent =
+          (finalTimer / (breakStatus ? breakTime * 60 : sessionTime * 60)) *
+          100;
+        console.log(currPercent);
+        setPercentage(currPercent);
         setTimer(finalTimer);
         setOnbreak(finalBreakStatus);
       }, 1000);
@@ -105,7 +112,7 @@ const App = () => {
 
   return (
     <div className="container">
-      <Circle len={100} />
+      <Circle len={percentage} />
       <TimerDisplay
         timerOn={timerOn}
         timer={timer}
@@ -120,11 +127,7 @@ const App = () => {
         increment={increment}
         decrement={decrement}
       />
-      <audio
-        ref={audio}
-        id="beep"
-        src="https://fsb.zobj.net/download/bwtw423HL9kPA6SmKhXxg4UShcWJOoqknqbjIGHnI9PDnuMnOJjkEERpi-4zNCYN2vRGU11PhtyVF_P4WiuN7B5olpavNjskm2EJo_PVOJKvdVBK9hEFtVt-T4ZQ/?a=&c=72&f=windows_7_startup.mp3&special=1658415103-rOCToxAudpme14J88BOmtPNWvjTFcYVcyBu01fV4oKM%3D"
-      />
+      <audio ref={audio} id="beep" src={MusicSouce} />
     </div>
   );
 };
